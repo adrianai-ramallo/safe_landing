@@ -1,0 +1,66 @@
+FloatLayout:
+    Background:
+        id: background
+        canvas.before:
+
+            #sky
+            Rectangle:
+                #screen size
+                size: self.size
+                pos: self.pos
+                source: "sky.png"
+
+            #clouds
+            Rectangle:
+                id:clouds
+                size: self.width, self.height
+                pos: self.pos
+                texture: self.clouds_texture
+
+            #grass
+            Rectangle:
+                id:grass
+                size: self.width, self.height/7
+                pos:self.pos
+                texture: self.grass_texture
+
+            #pines
+            Rectangle:
+                id:pines
+                size: self.width, self.height/3
+                pos:0,70
+                texture: self.pines_texture
+
+            #water
+          #  Rectangle:
+            #    id:water
+             #   size: self.width, self.height/3
+              #  pos:0, 140
+               # texture: self.water_texture
+
+
+    Button:
+        text:"Start"
+        size_hint: None, None
+        on_release:
+            app.start()
+    Ballon:
+        id: ballon
+        source: "ballon_low.png"
+        size_hint:None, None
+        size: 737/6,1277/6
+        pos: 20, self.height+150
+
+    #Pines:
+     #   id:pines
+      #  size_hint:None, None
+       # size: 250, root.height/3
+        #pos: 200, 70
+
+        #canvas.before:
+         #   Color:
+          #      #rgba: 1,1,1,.2
+           # Rectangle:
+            #    size: self.size
+             #   pos: self.pos
+                #source: "pines.png"
