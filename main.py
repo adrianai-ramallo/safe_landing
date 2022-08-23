@@ -14,9 +14,14 @@ class Pines(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+#class Red_pines(Image):
+    #velocity = NumericProperty(0)
+#    def on_touch_down(self, touch):
+  #      self.source = "red_pines.png"
+        #self.velocity= 150
 
 class Ballon(Image):
-    velocity = NumericProperty(0)
+    #velocity = NumericProperty(0)
     def on_touch_down(self, touch):
         self.source = "ballon_high.png"
         self.velocity = 150
@@ -28,8 +33,9 @@ class Ballon(Image):
         super().on_touch_up(touch)
 
 class Background(Widget):
-    grass_texture= ObjectProperty(None)
+    grass_texture= ObjectProperty()
     pines_texture = ObjectProperty(None)
+    red_pines_texture = ObjectProperty(None)
     clouds_texture = ObjectProperty(None)
     water_texture = ObjectProperty(None)
 
@@ -37,11 +43,15 @@ class Background(Widget):
         super().__init__(**kwargs)
         self.grass_texture = Image(source="grass.png").texture
         self.grass_texture.wrap = "repeat"
-        self.grass_texture.uvsize = (Window.width/self.grass_texture.width,-2)
+        self.grass_texture.uvsize = (Window.width/self.grass_texture.width*2,-2)
 
         self.pines_texture = Image(source="pines.png").texture
         self.pines_texture.wrap = "repeat"
         self.pines_texture.uvsize = (Window.width/180,-1)
+
+        self.red_pines_texture = Image(source="red_pines.png").texture
+        self.red_pines_texture.wrap ="repeat"
+        self.red_pines_texture.uvsize = (Window.width/300,-1)
 
         self.water_texture = Image(source="water.png").texture
         self.water_texture.wrap = "repeat"
@@ -49,10 +59,10 @@ class Background(Widget):
 
         self.clouds_texture = Image(source="clouds.png").texture
         self.clouds_texture.wrap = "repeat"
-        self.clouds_texture.uvsize = (Window.width / (self.clouds_texture.width), -1)
+        self.clouds_texture.uvsize = (Window.width / (self.clouds_texture.width)*4, -4)
 
     def scroll_grass(self, time):
-        #grass
+
         self.grass_texture.uvpos = (((self.grass_texture.uvpos[0]+ time)%Window.height),(self.grass_texture.uvpos[1]+1))
         texture = self.property("grass_texture")
         texture.dispatch(self)
@@ -60,8 +70,15 @@ class Background(Widget):
 
     def scroll_pines(self, time):
         #pines
-        self.pines_texture.uvpos = (((self.pines_texture.uvpos[0]+ time/6)%Window.height),(self.pines_texture.uvpos[1]+1))
+        self.pines_texture.uvpos = (((self.pines_texture.uvpos[0]+ time/4)%Window.height),(self.pines_texture.uvpos[1]+1))
         texture = self.property("pines_texture")
+        texture.dispatch(self)
+    pass
+
+    def scroll_red_pines(self, time):
+        #pines
+        self.red_pines_texture.uvpos = (((self.red_pines_texture.uvpos[0]+ time/10)%Window.height),(self.red_pines_texture.uvpos[1]+1))
+        texture = self.property("red_pines_texture")
         texture.dispatch(self)
     pass
 
@@ -74,39 +91,54 @@ class Background(Widget):
 
     def scroll_clouds(self, time):
         #clouds
-        self.clouds_texture.uvpos = (((self.clouds_texture.uvpos[0]+ time/6)%Window.height),(self.clouds_texture.uvpos[1]))
+        self.clouds_texture.uvpos = (((self.clouds_texture.uvpos[0]+ time/10)%Window.height),(self.clouds_texture.uvpos[1]))
         texture = self.property("clouds_texture")
         texture.dispatch(self)
     pass
+
+
 
 from kivy.clock import Clock
 
 class MainApp(App):
     GRAVITY = 100
 
-    def collides(rect1, rect2):
-        r1x = rect1[0][0]
-        r1y = rect1[0][1]
-        r2x = rect2[0][0]
-        r2y = rect2[0][1]
-        r1w = rect1[1][0]
-        r1h = rect1[1][1]
-        r2w = rect2[1][0]
-        r2h = rect2[1][1]
+    #def coallision (ballon, red_pines):
+   #     if ballon = red_pines.pos then
 
-        if (r1x < r2x + r2w and r1x +r1w >r2x and r1y < r2y + r2h and r1y + r1h > r2y):
-            return True
-        else:
-            return False
+
+    #def collides(ballon, red_pines):
+
+    #    r1x = rect1[0][0]
+    #    r1y = rect1[0][1]
+      #  r2x = rect2[0][0]
+     #   r2y = rect2[0][1]
+     #   r1w = rect1[1][0]
+     #   r1h = rect1[1][1]
+     #   r2w = rect2[1][0]
+    #    r2h = rect2[1][1]
+
+    #    if (r1x < r2x + r2w and r1x +r1w >r2x and r1y < r2y + r2h and r1y + r1h > r2y):
+
+
+        #  return True
+     #   else:
+        #    return False
+
 
     def on_start(self):
         Clock.schedule_interval(self.root.ids.background.scroll_grass, 1/60)
         Clock.schedule_interval(self.root.ids.background.scroll_pines, 1 / 60)
+        Clock.schedule_interval(self.root.ids.background.scroll_red_pines, 1 / 60)
         Clock.schedule_interval(self.root.ids.background.scroll_water, 1 / 60)
         Clock.schedule_interval(self.root.ids.background.scroll_clouds, 1 / 60)
 
     
     def move_ballon(self, time):
+    # idea to use the physics approach to the ballon movement taken from: flappy bird https://www.youtube.com/watch?v=cGYMZB_peBM&list=PLy5hjmUzdc0mSEN7WxUQ_HlP6X_OdvMlq
+    #modified using newton's law of universal gravitation Force = Gravitational constant (mass of object 1 * mass of object 2)/ distance between centers of the masses --> universetoday.com
+
+
         ballon= self.root.ids.ballon
         ballon.y = ballon.y + ballon.velocity * time
         ballon.velocity = ballon.velocity - self.GRAVITY * time

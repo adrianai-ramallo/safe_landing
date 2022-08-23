@@ -1,4 +1,7 @@
+
+
 FloatLayout:
+
     Background:
         id: background
         canvas.before:
@@ -14,7 +17,7 @@ FloatLayout:
             Rectangle:
                 id:clouds
                 size: self.width, self.height
-                pos: self.pos
+                pos: 0, self.height/1.4
                 texture: self.clouds_texture
 
             #grass
@@ -24,12 +27,22 @@ FloatLayout:
                 pos:self.pos
                 texture: self.grass_texture
 
+            #red_pines
+            Rectangle:
+                id:red_pines
+                size: self.width, self.height/2.7
+                pos:0,70
+                texture: self.red_pines_texture
+
+
             #pines
             Rectangle:
                 id:pines
                 size: self.width, self.height/3
                 pos:0,70
                 texture: self.pines_texture
+
+
 
             #water
           #  Rectangle:
@@ -38,6 +51,12 @@ FloatLayout:
               #  pos:0, 140
                # texture: self.water_texture
 
+  #  Red_pines:
+  #      id:red_pines
+  #      source: "red_pines.png"
+  #      size_hint:None, None
+  #      size: 737/5,1277/5
+  #      pos: 10, self.height/5
 
     Button:
         text:"Start"
@@ -50,6 +69,8 @@ FloatLayout:
         size_hint:None, None
         size: 737/6,1277/6
         pos: 20, self.height+150
+
+
 
     #Pines:
      #   id:pines
