@@ -20,8 +20,9 @@ class Pines(Widget):
   #      self.source = "red_pines.png"
         #self.velocity= 150
 
-class Ballon(Image):
+class Balloon(Image):
     #velocity = NumericProperty(0)
+    balloon= ObjectProperty()
     def on_touch_down(self, touch):
         self.source = "ballon_high.png"
         self.velocity = 150
@@ -31,6 +32,8 @@ class Ballon(Image):
         self.source = "ballon_low.png"
         #self.velocity = -80
         super().on_touch_up(touch)
+
+
 
 class Background(Widget):
     grass_texture= ObjectProperty()
@@ -97,35 +100,11 @@ class Background(Widget):
     pass
 
 
-
 from kivy.clock import Clock
 
 class MainApp(App):
     GRAVITY = 100
-
-    #def coallision (ballon, red_pines):
-   #     if ballon = red_pines.pos then
-
-
-    #def collides(ballon, red_pines):
-
-    #    r1x = rect1[0][0]
-    #    r1y = rect1[0][1]
-      #  r2x = rect2[0][0]
-     #   r2y = rect2[0][1]
-     #   r1w = rect1[1][0]
-     #   r1h = rect1[1][1]
-     #   r2w = rect2[1][0]
-    #    r2h = rect2[1][1]
-
-    #    if (r1x < r2x + r2w and r1x +r1w >r2x and r1y < r2y + r2h and r1y + r1h > r2y):
-
-
-        #  return True
-     #   else:
-        #    return False
-
-
+    WIND = 10
     def on_start(self):
         Clock.schedule_interval(self.root.ids.background.scroll_grass, 1/60)
         Clock.schedule_interval(self.root.ids.background.scroll_pines, 1 / 60)
@@ -134,48 +113,30 @@ class MainApp(App):
         Clock.schedule_interval(self.root.ids.background.scroll_clouds, 1 / 60)
 
     
-    def move_ballon(self, time):
+    def move_balloon(self, time):
     # idea to use the physics approach to the ballon movement taken from: flappy bird https://www.youtube.com/watch?v=cGYMZB_peBM&list=PLy5hjmUzdc0mSEN7WxUQ_HlP6X_OdvMlq
-    #modified using newton's law of universal gravitation Force = Gravitational constant (mass of object 1 * mass of object 2)/ distance between centers of the masses --> universetoday.com
 
+        balloon = self.root.ids.balloon
 
-        ballon= self.root.ids.ballon
-        ballon.y = ballon.y + ballon.velocity * time
-        ballon.velocity = ballon.velocity - self.GRAVITY * time
+        if balloon.y > 70:
+            if balloon.y >= 500:
+                balloon.y = balloon.y - self.GRAVITY *time
+                balloon.x = balloon.x + self.WIND * time
+
+            else:
+                balloon.y = balloon.y + balloon.velocity * time
+                balloon.x = balloon.x + self.WIND * time
+                balloon.velocity = balloon.velocity - self.GRAVITY * time
+        elif balloon.y == 70:
+            balloon.y = balloon.y
+            balloon.x = balloon.x
+
 
     def start(self):
-        Clock.schedule_interval(self.move_ballon, 1/60.)
+        Clock.schedule_interval(self.move_balloon, 1/60.)
     pass
 
 MainApp().run()
 
-       #step = self.root.ids.step
-        ### formula from https://www.youtube.com/watch?v=2dn_ohAqkus min 15:29
-      #  if self.collides((tb), (Background.step_texture)):
-       #     print("collide")
-        #else:
-         #   print("not")
-       # if tb.collide_widget(step):
-       #    tb.velocity = 0
-       # else:
-        #    tb.y = tb.y + tb.velocity * time
-        #    tb.velocity = tb.velocity - self.GRAVITY * time
 
-    #    self.if_collision()
-
-   # def if_collision(self):
-       # tb = self.root.ids.tb
-       # step = self.root.ids.step
-        #print('kkkk')
-        #if tb.collide_widget(step):
-         #   tb.velocity = 0
-        #else:
-         #   self.move_tb()
-
-    #def stop(self):
-     #   tb= self.root.ids.tb
-        ### formula from https://www.youtube.com/watch?v=2dn_ohAqkus min 15:29
-        #tb.y = tb.y
-
-#from https://www.youtube.com/watch?v=21tpqcO86Ko 5.21
 

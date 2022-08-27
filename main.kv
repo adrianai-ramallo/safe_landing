@@ -23,8 +23,10 @@ FloatLayout:
             #grass
             Rectangle:
                 id:grass
-                size: self.width, self.height/7
-                pos:self.pos
+                size: self.width, 70
+                #size: self.width, self.height/7
+                pos : 0,0
+                #pos:self.pos
                 texture: self.grass_texture
 
             #red_pines
@@ -63,8 +65,16 @@ FloatLayout:
         size_hint: None, None
         on_release:
             app.start()
-    Ballon:
-        id: ballon
+
+    Label:
+        text:"Score"
+       #font_size: 70
+        size_hint: None, None
+        pos: root.width-500, root.top-900
+
+
+    Balloon:
+        id: balloon
         source: "ballon_low.png"
         size_hint:None, None
         size: 737/6,1277/6
