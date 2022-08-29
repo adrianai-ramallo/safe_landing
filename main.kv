@@ -17,40 +17,42 @@ FloatLayout:
             Rectangle:
                 id:clouds
                 size: self.width, self.height
-                pos: 0, self.height/1.4
+                pos: 0, self.height/1.2
+                #size: self.width, self.height
+                #pos: 0, self.height/1.4
                 texture: self.clouds_texture
 
             #grass
             Rectangle:
                 id:grass
-                size: self.width, 70
-                #size: self.width, self.height/7
+                #size: self.width, 70
+                size: self.width, self.height/7
                 pos : 0,0
                 #pos:self.pos
                 texture: self.grass_texture
 
-            #red_pines
-            Rectangle:
-                id:red_pines
-                size: self.width, self.height/2.7
-                pos:0,70
-                texture: self.red_pines_texture
-
-
             #pines
             Rectangle:
                 id:pines
-                size: self.width, self.height/3
-                pos:0,70
+                size: self.width, 130
+                #size: self.width, self.height/3
+                #pos:0,70
+                pos: 0,0
                 texture: self.pines_texture
 
-
+            #red_pines
+            Rectangle:
+                id:red
+                #size: self.width, 70
+                size: self.width, self.height/2.7
+                pos:0,100
+                texture: self.red_texture
 
             #water
-          #  Rectangle:
-            #    id:water
-             #   size: self.width, self.height/3
-              #  pos:0, 140
+         #  Rectangle:
+               # id:water
+               # size: self.width, self.height/3
+               # pos:0, 140
                # texture: self.water_texture
 
   #  Red_pines:
@@ -68,7 +70,7 @@ FloatLayout:
 
     Label:
         text:"Score"
-       #font_size: 70
+        font_size: 70
         size_hint: None, None
         pos: root.width-500, root.top-900
 
@@ -77,9 +79,17 @@ FloatLayout:
         id: balloon
         source: "ballon_low.png"
         size_hint:None, None
-        size: 737/6,1277/6
+        size: 737/10,1277/10
+        #size: 737/6,1277/6
         pos: 20, self.height+150
 
+    Volcane:
+        id: volcane
+        source: "volcane_low.png"
+        size_hint: None, None
+        size: 616/2,325/2
+        pos:200,70
+        #pos: 0, 70
 
 
     #Pines:

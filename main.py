@@ -9,8 +9,7 @@ from kivy.core.window import Window
 from random import randint
 from kivy.properties import NumericProperty
 
-
-class Pines(Widget):
+class Check(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -23,6 +22,7 @@ class Pines(Widget):
 class Balloon(Image):
     #velocity = NumericProperty(0)
     balloon= ObjectProperty()
+
     def on_touch_down(self, touch):
         self.source = "ballon_high.png"
         self.velocity = 150
@@ -33,28 +33,43 @@ class Balloon(Image):
         #self.velocity = -80
         super().on_touch_up(touch)
 
+class Volcane(Image):
+    #velocity = NumericProperty(0)
+    volcane= ObjectProperty()
 
+    def on_touch_down(self, touch):
+        self.source = "volcane_high.png"
+        self.velocity = 150
+        super().on_touch_down(touch)
+
+    def on_touch_up(self, touch):
+        self.source = "volcane_low.png"
+        #self.velocity = -80
+        super().on_touch_up(touch)
 
 class Background(Widget):
-    grass_texture= ObjectProperty()
-    pines_texture = ObjectProperty(None)
-    red_pines_texture = ObjectProperty(None)
+    grass_texture = ObjectProperty()
+    pines_texture = ObjectProperty()
+    red_texture = ObjectProperty(None)
     clouds_texture = ObjectProperty(None)
     water_texture = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.grass_texture = Image(source="grass.png").texture
+        #self.grass_texture = Image(source="pines.png").texture
         self.grass_texture.wrap = "repeat"
         self.grass_texture.uvsize = (Window.width/self.grass_texture.width*2,-2)
 
         self.pines_texture = Image(source="pines.png").texture
+       # self.pines_texture.uvsize = (80, 80)
         self.pines_texture.wrap = "repeat"
+       # self.pines_texture.wrap = ""
         self.pines_texture.uvsize = (Window.width/180,-1)
 
-        self.red_pines_texture = Image(source="red_pines.png").texture
-        self.red_pines_texture.wrap ="repeat"
-        self.red_pines_texture.uvsize = (Window.width/300,-1)
+        self.red_texture = Image(source="red.png").texture
+        self.red_texture.wrap ="repeat"
+        self.red_texture.uvsize = (Window.width/300,-1)
 
         self.water_texture = Image(source="water.png").texture
         self.water_texture.wrap = "repeat"
@@ -62,12 +77,13 @@ class Background(Widget):
 
         self.clouds_texture = Image(source="clouds.png").texture
         self.clouds_texture.wrap = "repeat"
-        self.clouds_texture.uvsize = (Window.width / (self.clouds_texture.width)*4, -4)
+        self.clouds_texture.uvsize = (Window.width / self.clouds_texture.width*4, -4)
 
     def scroll_grass(self, time):
 
         self.grass_texture.uvpos = (((self.grass_texture.uvpos[0]+ time)%Window.height),(self.grass_texture.uvpos[1]+1))
         texture = self.property("grass_texture")
+        #texture = self.property("pines_texture")
         texture.dispatch(self)
     pass
 
@@ -78,10 +94,10 @@ class Background(Widget):
         texture.dispatch(self)
     pass
 
-    def scroll_red_pines(self, time):
+    def scroll_red(self, time):
         #pines
-        self.red_pines_texture.uvpos = (((self.red_pines_texture.uvpos[0]+ time/10)%Window.height),(self.red_pines_texture.uvpos[1]+1))
-        texture = self.property("red_pines_texture")
+        self.red_texture.uvpos = (((self.red_texture.uvpos[0]+ time/10)%Window.height),(self.red_texture.uvpos[1]+1))
+        texture = self.property("red_texture")
         texture.dispatch(self)
     pass
 
@@ -105,10 +121,11 @@ from kivy.clock import Clock
 class MainApp(App):
     GRAVITY = 100
     WIND = 10
+
     def on_start(self):
         Clock.schedule_interval(self.root.ids.background.scroll_grass, 1/60)
         Clock.schedule_interval(self.root.ids.background.scroll_pines, 1 / 60)
-        Clock.schedule_interval(self.root.ids.background.scroll_red_pines, 1 / 60)
+        Clock.schedule_interval(self.root.ids.background.scroll_red, 1 / 60)
         Clock.schedule_interval(self.root.ids.background.scroll_water, 1 / 60)
         Clock.schedule_interval(self.root.ids.background.scroll_clouds, 1 / 60)
 
@@ -118,19 +135,78 @@ class MainApp(App):
 
         balloon = self.root.ids.balloon
 
-        if balloon.y > 70:
+        grass = self.root.ids.background.grass_texture
+
+        volcane = self.root.ids.volcane
+        volcane.x = volcane.x - 0.7
+
+        #volcane.y = volcane.y + volcane.velocity * time
+        # volcane.velocity = 15
+        #red_pines = self.root.ids.background.red_pines_texture
+
+        pines = self.root.ids.background.pines_texture
+
+        if balloon.y > grass.height:
             if balloon.y >= 500:
-                balloon.y = balloon.y - self.GRAVITY *time
-                balloon.x = balloon.x + self.WIND * time
+                balloon.y = balloon.y - self.GRAVITY * time * 15
+
+            elif  volcane.y <= balloon.y <= 325/2 and volcane.x<=balloon.x<=612/2:
+
+                balloon.y = balloon.y
+                balloon.x = balloon.x
 
             else:
                 balloon.y = balloon.y + balloon.velocity * time
                 balloon.x = balloon.x + self.WIND * time
                 balloon.velocity = balloon.velocity - self.GRAVITY * time
-        elif balloon.y == 70:
-            balloon.y = balloon.y
-            balloon.x = balloon.x
 
+         #   elif balloon.x < volcane.x :
+           #     balloon.y = balloon.y + balloon.velocity * time
+          #      balloon.x = balloon.x + self.WIND * time
+         #       balloon.velocity = balloon.velocity - self.GRAVITY * time
+
+
+           # elif  balloon.x >= volcane.x and balloon.y <= volcane.y:
+              #  balloon.y = balloon.y
+             #   balloon.x = balloon.x
+      #      elif balloon.x == volcane.x and balloon.y >= volcane.y:
+
+     #   elif balloon.y >= 500:
+    #        balloon.y = balloon.y - self.GRAVITY * time * 15
+
+         #       and
+
+    #or (balloon.x == volcane.x and balloon.y >= volcane.y)
+       #if balloon.x != volcane.x:
+        #if balloon.y > pines.height/7:
+        #if balloon.y > 200:
+
+
+
+           # elif balloon.y -100 >= volcane.y and balloon.x <= volcane.x+120:
+
+           #     balloon.y = balloon.y + balloon.velocity * time
+            #    balloon.x = balloon.x + self.WIND * time
+           #     balloon.velocity = balloon.velocity*2 - self.GRAVITY * time
+          #  elif balloon.y > volcane.height and balloon.x >= volcane.x:
+           #     balloon.y = balloon.y + balloon.velocity * time
+            #    balloon.x = balloon.x + self.WIND * time
+             #   balloon.velocity = balloon.velocity - self.GRAVITY * time
+
+        #    else:
+         #       balloon.y = balloon.y + balloon.velocity * time
+         #       balloon.x = balloon.x + self.WIND * time
+         #       balloon.velocity = balloon.velocity - self.GRAVITY * time
+        #elif balloon.y > volcane.y and balloon.x == volcane.x:
+
+      #      balloon.y = balloon.y + balloon.velocity * time
+     #       balloon.x = balloon.x + self.WIND * time
+       #     balloon.velocity = balloon.velocity*2 - self.GRAVITY * time
+
+       # elif balloon.y > grass.height and balloon.x > volcane.x:
+        #    balloon.y = balloon.y + balloon.velocity * time
+         #   balloon.x = balloon.x + self.WIND * time
+         #   balloon.velocity = balloon.velocity * 2 - self.GRAVITY * time
 
     def start(self):
         Clock.schedule_interval(self.move_balloon, 1/60.)
