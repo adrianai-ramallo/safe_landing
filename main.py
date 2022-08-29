@@ -33,9 +33,9 @@ class Balloon(Image):
         #self.velocity = -80
         super().on_touch_up(touch)
 
-class Volcane(Image):
+class Volcano(Image):
     #velocity = NumericProperty(0)
-    volcane= ObjectProperty()
+    volcano= ObjectProperty()
 
     def on_touch_down(self, touch):
         self.source = "volcane_high.png"
@@ -121,6 +121,7 @@ from kivy.clock import Clock
 class MainApp(App):
     GRAVITY = 100
     WIND = 10
+    score = NumericProperty(3)
 
     def on_start(self):
         Clock.schedule_interval(self.root.ids.background.scroll_grass, 1/60)
@@ -137,76 +138,49 @@ class MainApp(App):
 
         grass = self.root.ids.background.grass_texture
 
-        volcane = self.root.ids.volcane
-        volcane.x = volcane.x - 0.7
-
-        #volcane.y = volcane.y + volcane.velocity * time
-        # volcane.velocity = 15
-        #red_pines = self.root.ids.background.red_pines_texture
-
-        pines = self.root.ids.background.pines_texture
-
         if balloon.y > grass.height:
-            if balloon.y >= 500:
+            if balloon.y >= Window.height-70:
                 balloon.y = balloon.y - self.GRAVITY * time * 15
-
-            elif  volcane.y <= balloon.y <= 325/2 and volcane.x<=balloon.x<=612/2:
-
-                balloon.y = balloon.y
-                balloon.x = balloon.x
-
             else:
                 balloon.y = balloon.y + balloon.velocity * time
                 balloon.x = balloon.x + self.WIND * time
                 balloon.velocity = balloon.velocity - self.GRAVITY * time
 
-         #   elif balloon.x < volcane.x :
-           #     balloon.y = balloon.y + balloon.velocity * time
-          #      balloon.x = balloon.x + self.WIND * time
-         #       balloon.velocity = balloon.velocity - self.GRAVITY * time
+        volcano = self.root.ids.volcano
+        volcano.x = volcano.x - 0.7
+        self.check_collision()
+
+   # def score(self, balloon):
+#
+
+    def check_collision(self):
+        balloon = self.root.ids.balloon
+        volcano = self.root.ids.volcano
+
+        if volcano.collide_widget(balloon):
+            self.game_over()
+
+    def game_over(self):
+
+        balloon = self.root.ids.balloon
+        balloon.y = balloon.y + 100
+        balloon.x = balloon.x + 0
+        #self.root.ids.balloon.source = ""
+        self.score -= 1
 
 
-           # elif  balloon.x >= volcane.x and balloon.y <= volcane.y:
-              #  balloon.y = balloon.y
-             #   balloon.x = balloon.x
-      #      elif balloon.x == volcane.x and balloon.y >= volcane.y:
 
-     #   elif balloon.y >= 500:
-    #        balloon.y = balloon.y - self.GRAVITY * time * 15
+#
+#            elif  volcane.y <= balloon.y <= 325/2 and volcane.x <=balloon.x<=612/2:
 
-         #       and
+#                balloon.y = balloon.y
+#                balloon.x = balloon.x
 
-    #or (balloon.x == volcane.x and balloon.y >= volcane.y)
-       #if balloon.x != volcane.x:
-        #if balloon.y > pines.height/7:
-        #if balloon.y > 200:
+#            else:
+#                balloon.y = balloon.y + balloon.velocity * time
+#                balloon.x = balloon.x + self.WIND * time
+ #               balloon.velocity = balloon.velocity - self.GRAVITY * time
 
-
-
-           # elif balloon.y -100 >= volcane.y and balloon.x <= volcane.x+120:
-
-           #     balloon.y = balloon.y + balloon.velocity * time
-            #    balloon.x = balloon.x + self.WIND * time
-           #     balloon.velocity = balloon.velocity*2 - self.GRAVITY * time
-          #  elif balloon.y > volcane.height and balloon.x >= volcane.x:
-           #     balloon.y = balloon.y + balloon.velocity * time
-            #    balloon.x = balloon.x + self.WIND * time
-             #   balloon.velocity = balloon.velocity - self.GRAVITY * time
-
-        #    else:
-         #       balloon.y = balloon.y + balloon.velocity * time
-         #       balloon.x = balloon.x + self.WIND * time
-         #       balloon.velocity = balloon.velocity - self.GRAVITY * time
-        #elif balloon.y > volcane.y and balloon.x == volcane.x:
-
-      #      balloon.y = balloon.y + balloon.velocity * time
-     #       balloon.x = balloon.x + self.WIND * time
-       #     balloon.velocity = balloon.velocity*2 - self.GRAVITY * time
-
-       # elif balloon.y > grass.height and balloon.x > volcane.x:
-        #    balloon.y = balloon.y + balloon.velocity * time
-         #   balloon.x = balloon.x + self.WIND * time
-         #   balloon.velocity = balloon.velocity * 2 - self.GRAVITY * time
 
     def start(self):
         Clock.schedule_interval(self.move_balloon, 1/60.)

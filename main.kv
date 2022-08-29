@@ -6,6 +6,8 @@ FloatLayout:
         id: background
         canvas.before:
 
+
+
             #sky
             Rectangle:
                 #screen size
@@ -69,10 +71,11 @@ FloatLayout:
             app.start()
 
     Label:
-        text:"Score"
+        id: label
+        text:str(app.score)
         font_size: 70
         size_hint: None, None
-        pos: root.width-500, root.top-900
+        pos: 100,0
 
 
     Balloon:
@@ -83,8 +86,8 @@ FloatLayout:
         #size: 737/6,1277/6
         pos: 20, self.height+150
 
-    Volcane:
-        id: volcane
+    Volcano:
+        id: volcano
         source: "volcane_low.png"
         size_hint: None, None
         size: 616/2,325/2
