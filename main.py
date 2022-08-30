@@ -8,6 +8,13 @@ from kivy.uix.image import Image
 from kivy.core.window import Window
 from random import randint
 from kivy.properties import NumericProperty
+from kivy.uix.screenmanager import ScreenManager, Screen
+import pandas as pd
+import sqlite3
+
+
+
+
 
 class Check(Widget):
     def __init__(self, **kwargs):
@@ -44,6 +51,20 @@ class Volcano(Image):
 
     def on_touch_up(self, touch):
         self.source = "volcane_low.png"
+        #self.velocity = -80
+        super().on_touch_up(touch)
+
+class Purple_cloud(Image):
+    #velocity = NumericProperty(0)
+    purple_cloud= ObjectProperty()
+
+    def on_touch_down(self, touch):
+        self.source = "purple_cloud2.png"
+        self.velocity = 150
+        super().on_touch_down(touch)
+
+    def on_touch_up(self, touch):
+        self.source = "purple_cloud.png"
         #self.velocity = -80
         super().on_touch_up(touch)
 
@@ -122,6 +143,7 @@ class MainApp(App):
     GRAVITY = 100
     WIND = 10
     score = NumericProperty(3)
+    life = NumericProperty(0)
 
     def on_start(self):
         Clock.schedule_interval(self.root.ids.background.scroll_grass, 1/60)
@@ -138,48 +160,62 @@ class MainApp(App):
 
         grass = self.root.ids.background.grass_texture
 
+        volcano = self.root.ids.volcano
+        volcano.x = volcano.x - 0.7
+
+        purple_cloud = self.root.ids.purple_cloud
+        purple_cloud.x = purple_cloud.x - 0.7
+
+
         if balloon.y > grass.height:
             if balloon.y >= Window.height-70:
                 balloon.y = balloon.y - self.GRAVITY * time * 15
             else:
-                balloon.y = balloon.y + balloon.velocity * time
-                balloon.x = balloon.x + self.WIND * time
-                balloon.velocity = balloon.velocity - self.GRAVITY * time
+                if volcano.collide_widget(balloon):
+                    balloon.y = 600 + balloon.velocity * time
+                    balloon.x = balloon.x +60 + self.WIND * time
+                    balloon.velocity = balloon.velocity - self.GRAVITY * time
+                    self.life -= 1
+                elif purple_cloud.collide_widget(balloon):
+                    balloon.y = balloon.y -20 + balloon.velocity * time
+                    balloon.x = balloon.x+5 + self.WIND * time
+                    balloon.velocity = balloon.velocity - self.GRAVITY * time*2
+                    self.score += 10
+                else:
+                    balloon.y = balloon.y + balloon.velocity * time
+                    balloon.x = balloon.x + self.WIND * time
+                    balloon.velocity = balloon.velocity - self.GRAVITY * time
 
-        volcano = self.root.ids.volcano
-        volcano.x = volcano.x - 0.7
-        self.check_collision()
+        elif balloon.y <= grass.height:
+           # balloon.y = 70
+            #balloon.x = balloon.x
+            #balloon.velocity = 0
+           # self.won(time)
+            self.score += 20
+            balloon.y = 200
+            balloon.x = 200
+            balloon.velocity = 0
+            balloon.source = ""
+            pass
+
+
+
+        #self.check_collision(time)
 
    # def score(self, balloon):
 #
 
-    def check_collision(self):
-        balloon = self.root.ids.balloon
-        volcano = self.root.ids.volcano
-
-        if volcano.collide_widget(balloon):
-            self.game_over()
-
-    def game_over(self):
-
-        balloon = self.root.ids.balloon
-        balloon.y = balloon.y + 100
-        balloon.x = balloon.x + 0
-        #self.root.ids.balloon.source = ""
-        self.score -= 1
+    #def won(self, time):
+      #  balloon = self.root.ids.balloon
+       # volcano = self.root.ids.volcano
+    #ask user for a name and save the score
+     #   self.score -= 10
+      #  save_score = input("Do you want to save your score? Y/N")
+       # if save_score =="Y" or save_score == "y":
+        #    name = input("Player name:")
 
 
 
-#
-#            elif  volcane.y <= balloon.y <= 325/2 and volcane.x <=balloon.x<=612/2:
-
-#                balloon.y = balloon.y
-#                balloon.x = balloon.x
-
-#            else:
-#                balloon.y = balloon.y + balloon.velocity * time
-#                balloon.x = balloon.x + self.WIND * time
- #               balloon.velocity = balloon.velocity - self.GRAVITY * time
 
 
     def start(self):
