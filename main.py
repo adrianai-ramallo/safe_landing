@@ -249,16 +249,15 @@ class MainApp(App):
                 balloon.y = 600 + balloon.velocity * time
                 balloon.x = balloon.x +60 + self.WIND * time
                 balloon.velocity = balloon.velocity - self.GRAVITY * time
-
                 self.life -= 1
-                self.game_over(time)
+                if self.life == 0:
+                    self.game_over(time)
 
             elif purple_cloud.collide_widget(balloon):
                 balloon.y = balloon.y -20 + balloon.velocity * time
                 balloon.x = balloon.x+5 + self.WIND * time
                 balloon.velocity = balloon.velocity - self.GRAVITY * time*2
                 self.score += 10
-                purple_cloud.source ="ten.png"
                 purple_cloud.y = 800
                 self.move_purple_cloud(time)
             elif yell_cloud.collide_widget(balloon):
@@ -281,25 +280,33 @@ class MainApp(App):
                 balloon.velocity = balloon.velocity - self.GRAVITY * time
 
         elif balloon.y <= grass.height:
-
-            self.score += 20
-            balloon.y = 200
-            balloon.x = 200
-            balloon.velocity = 0
-            balloon.source = ""
+            #balloon.y = 0
+            #balloon.x = 0
+            #balloon.velocity = 0
+            balloon.size = (450,450)
+            balloon.pos=(50,50)
             self.frames.cancel()
             pass
 
 
     def game_over(self, time):
         balloon = self.root.ids.balloon
-        if self.life == 0:
-            balloon.source = "heart.png"
-            balloon.y = balloon.y + balloon.velocity * time/2
-            balloon.x = balloon.x
-            balloon.velocity = 0
-            if balloon.y <= 200:
-                self.frames.cancel()
+        #if self.life == 0:
+      #  balloon.y == 250
+        balloon.y = 400
+        #balloon.x = 400
+        balloon.velocity = 0
+        balloon.source = "heart.png"
+        balloon.size = (450, 450)
+        balloon.pos = (50, 50)
+        if balloon.y <= 400:
+            self.frames.cancel()
+
+       #     balloon.y = balloon.y + balloon.velocity * time/2
+        #    balloon.x = balloon.x
+       #     balloon.velocity = 0
+        #    if balloon.y <= 200:
+        #        self.frames.cancel()
            # self.end()
         #self.check_collision(time)
   #  def end(self):
@@ -318,12 +325,12 @@ class MainApp(App):
         #    name = input("Player name:")
 
 
-    def on_start(self):
-        Clock.schedule_interval(self.root.ids.background.scroll_grass, 1/60)
-        #Clock.schedule_interval(self.root.ids.background.scroll_pines, 1 / 60)
-        Clock.schedule_interval(self.root.ids.background.scroll_red, 1 / 60)
-        Clock.schedule_interval(self.root.ids.background.scroll_water, 1 / 60)
-        Clock.schedule_interval(self.root.ids.background.scroll_clouds, 1 / 60)
+   # def on_start(self):
+    #    Clock.schedule_interval(self.root.ids.background.scroll_grass, 1/60)
+
+    #    Clock.schedule_interval(self.root.ids.background.scroll_red, 1 / 60)
+     #   Clock.schedule_interval(self.root.ids.background.scroll_water, 1 / 60)
+      #  Clock.schedule_interval(self.root.ids.background.scroll_clouds, 1 / 60)
 
     def next_frame(self,time_passed):
         self.move_balloon(time_passed)
@@ -332,7 +339,10 @@ class MainApp(App):
         self.move_purple_cloud(time_passed)
         self.move_yell_cloud(time_passed)
         self.move_bor_cloud(time_passed)
-
+        self.root.ids.background.scroll_clouds(time_passed)
+        self.root.ids.background.scroll_grass(time_passed)
+        self.root.ids.background.scroll_red(time_passed)
+     #   self.root.ids.background.scroll_water(time_passed)
 
     def start(self):
         self.frames = Clock.schedule_interval(self.next_frame, 1/60.)
