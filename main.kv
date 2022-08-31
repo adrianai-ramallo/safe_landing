@@ -6,13 +6,12 @@ FloatLayout:
         id: background
         canvas.before:
 
-
-
             #sky
             Rectangle:
                 #screen size
                 size: self.size
                 pos: self.pos
+                color:
                 source: "sky.png"
 
             #clouds
@@ -28,26 +27,17 @@ FloatLayout:
             Rectangle:
                 id:grass
                 #size: self.width, 70
-                size: self.width, self.height/7
-                pos : 0,0
+                size: self.width, 70
+                pos : 0,10
                 #pos:self.pos
                 texture: self.grass_texture
 
-            #pines
-            Rectangle:
-                id:pines
-                size: self.width, 130
-                #size: self.width, self.height/3
-                #pos:0,70
-                pos: 0,0
-                texture: self.pines_texture
-
-            #red_pines
+            #red_pines/ mountains
             Rectangle:
                 id:red
-                #size: self.width, 70
+                #size: self.width, 60
                 size: self.width, self.height/2.7
-                pos:0,100
+                pos:0,70
                 texture: self.red_texture
 
             #water
@@ -57,12 +47,6 @@ FloatLayout:
                # pos:0, 140
                # texture: self.water_texture
 
-  #  Red_pines:
-  #      id:red_pines
-  #      source: "red_pines.png"
-  #      size_hint:None, None
-  #      size: 737/5,1277/5
-  #      pos: 10, self.height/5
 
     Button:
         text:"Start"
@@ -72,10 +56,17 @@ FloatLayout:
 
     Label:
         id: label
-        text:str(app.score)
-        font_size: 70
+        text:"Score: " + str( app.score)
+        font_size: 30
         size_hint: None, None
-        pos: 100,0
+        pos: 150,-10
+
+    Label:
+        id: label2
+        text:"Lives: " + str( app.life)
+        font_size: 30
+        size_hint: None, None
+        pos: 150,20
 
 
     Balloon:
@@ -86,32 +77,43 @@ FloatLayout:
         #size: 737/6,1277/6
         pos: 20, self.height+150
 
+    Pines:
+        id: pines
+        source: "pines.png"
+        size_hint:None, None
+        size: 1903/6,1145/6
+        #size: self.width * 10, self.height * 10
+        pos: 600, 60
+
+
+#loose lives:
     Volcano:
         id: volcano
         source: "volcane_low.png"
         size_hint: None, None
-        size: 616/2,325/2
+        size: 300, 130
         pos:200,70
-        #pos: 0, 70
 
+#win points
     Purple_cloud:
         id: purple_cloud
         source: "purple_cloud.png"
         size_hint: None, None
-        size: self.width, self.height
-        pos: 200, self.height+400
+        size: 598/4.5, 401/4.5
+        pos: 100, self.height+350
+
+    Bor_cloud:
+        id: bor_cloud
+        source: "red_cloud.png"
+        size_hint: None, None
+        size: 598/4.5, 401/4.5
+        pos: 300, self.height+400
+
+    Yell_cloud:
+        id: yell_cloud
+        source: "yell_cloud.png"
+        size_hint: None, None
+        size: 598/4.5, 401/4.5
+        pos:600, self.height+300
 
 
-    #Pines:
-     #   id:pines
-      #  size_hint:None, None
-       # size: 250, root.height/3
-        #pos: 200, 70
-
-        #canvas.before:
-         #   Color:
-          #      #rgba: 1,1,1,.2
-           # Rectangle:
-            #    size: self.size
-             #   pos: self.pos
-                #source: "pines.png"
