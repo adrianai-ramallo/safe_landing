@@ -194,16 +194,16 @@ class MainApp(App):
 
     def move_volcano(self, time):
         volcano = self.root.ids.volcano
-        volcano.x = volcano.x - 0.7
+        volcano.x = volcano.x - randint(1,2)
         if volcano.x <= -100:
             volcano.x = Window.width+20
-
+            volcano.x = volcano.x - randint(0, 60)
     def move_pines(self, time):
         pines = self.root.ids.pines
-        pines.x = pines.x - 0.7
+        pines.x = pines.x - randint(1,2)
         if pines.x <= -100:
             pines.x = Window.width+20
-
+            pines.x = pines.x - randint(0, 40)
     def move_purple_cloud(self, time):
         purple_cloud = self.root.ids.purple_cloud
         purple_cloud.x = purple_cloud.x - 0.7
