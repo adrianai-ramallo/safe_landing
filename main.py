@@ -9,6 +9,7 @@ from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle
 from random import randint
 from kivy.properties import NumericProperty
+
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 

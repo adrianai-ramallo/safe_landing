@@ -11,8 +11,9 @@ FloatLayout:
                 #screen size
                 size: self.size
                 pos: self.pos
-                color:
+
                 source: "sky.png"
+
 
             #clouds
             Rectangle:
@@ -49,26 +50,41 @@ FloatLayout:
 
 
     Button:
-        text:"Start"
+        text:"Play"
         size_hint: None, None
+        size: 80,80
+        pos: 0,0
+        background_color: (0,0,0)
+
+
         on_release:
             app.start()
 
-    Label:
-        id: label
-        text:"Score: " + str( app.score)
-        font_size: 30
-        size_hint: None, None
-        pos: 150,-10
+    #Label:
+    #    id: label
+    #    text:"Score   " + str( app.score)
+     #   font_size: 30
+     #   size_hint: None, None
+     #   pos: 150,0
+      #  background_color: (0,0,0)
 
     Label:
         id: label2
-        text:"Lives: " + str( app.life)
-        font_size: 30
+        text:"Lives   " + str( app.life) + "\n" + "Score   " + str( app.score)
+        font_size: 20
         size_hint: None, None
-        pos: 150,20
-
-
+        size: 150,70
+        pos: 100,0
+        background_color: (220, 20, 22, 22)
+        background_normal:""
+       # rgba(22, 20, 22, 0.88)
+        canvas.before:
+            Color:
+                rgba:self.background_color
+            Rectangle:
+                size: self.size
+                pos:self.pos
+        color: (179,250,22,1)
     Balloon:
         id: balloon
         source: "ballon_low.png"
