@@ -8,6 +8,7 @@ FloatLayout:
 
             #sky
             Rectangle:
+                id: sky
                 #screen size
                 size: self.size
                 pos: self.pos
@@ -60,44 +61,35 @@ FloatLayout:
         on_release:
             app.start()
 
-    #Label:
-    #    id: label
-    #    text:"Score   " + str( app.score)
-     #   font_size: 30
-     #   size_hint: None, None
-     #   pos: 150,0
-      #  background_color: (0,0,0)
 
     Label:
-        id: label2
+        id: label
         text:"Lives   " + str( app.life) + "\n" + "Score   " + str( app.score)
         font_size: 20
         size_hint: None, None
         size: 150,70
         pos: 100,0
-        background_color: (220, 20, 22, 22)
-        background_normal:""
-       # rgba(22, 20, 22, 0.88)
+
         canvas.before:
-            Color:
-                rgba:self.background_color
+
             Rectangle:
                 size: self.size
                 pos:self.pos
         color: (179,250,22,1)
+
     Balloon:
         id: balloon
         source: "ballon_low.png"
         size_hint:None, None
-        size: 737/10,1277/10
+        size: 737/7,1277/7
         #size: 737/6,1277/6
-        pos: 20, self.height+150
+        pos: 20, 250
 
     Pines:
         id: pines
         source: "pines.png"
         size_hint:None, None
-        size: 1903/6,1145/6
+        size: 1903/4,1145/4
         #size: self.width * 10, self.height * 10
         pos: 600, 60
 
@@ -107,29 +99,29 @@ FloatLayout:
         id: volcano
         source: "volcane_low.png"
         size_hint: None, None
-        size: 300, 130
-        pos:200,70
+        size: 300*2, 130*2
+        pos:300,70
 
 #win points
     Purple_cloud:
         id: purple_cloud
         source: "purple_cloud.png"
         size_hint: None, None
-        size: 598/4.5, 401/4.5
+        size: 598/4, 401/4
         pos: 100, self.height+350
 
     Bor_cloud:
         id: bor_cloud
         source: "red_cloud.png"
         size_hint: None, None
-        size: 598/4.5, 401/4.5
+        size: 598/3, 401/3
         pos: 300, self.height+400
 
     Yell_cloud:
         id: yell_cloud
         source: "yell_cloud.png"
         size_hint: None, None
-        size: 598/4.5, 401/4.5
+        size: 598/4, 401/4
         pos:600, self.height+300
 
 
